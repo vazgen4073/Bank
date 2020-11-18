@@ -19,12 +19,11 @@ public:
     void view_cust_list();
 
 private:
-    std::ofstream out;
-    int account_number = 0;
+    const std::string path = "bankfile.json";
 
     struct Person {
         int money = 0;
-        std::string name, last_name, passport_number,
+        std::string name, password, last_name, passport_number,
             date_of_birth, middle_name;
     };
 };

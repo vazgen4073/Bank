@@ -8,10 +8,10 @@ void print_Welcome()
 
     std::cout << "Enter 1 to create account\n"
               << "Enter 2 to update information to your account\n"
-              << "Enter 3 to see your transactions \n"
+              << "Enter 3 transactions \n"
               << "Enter 4 to check your account details \n"
-              << "Enter 5 to rwmove your account\n"
-              << "Enter 6 to view client  list \n"
+              << "Enter 5 to remove your account\n"
+              << "Enter 6 to view customers list \n"
               << "Enter 7 to exit\n";
 }
 
@@ -37,17 +37,20 @@ int main()
             break;
         case 3:
             //for transactions
+            bobj.transactions();
             break;
         case 4:
 
             //check the  details  of existing  account
+            bobj.check_det_acount();
             break;
         case 5:
-
+            bobj.rm_exs_account();
             //removing  existing  account
             break;
         case 6:
             //view customers  list
+            bobj.view_cust_list();
             break;
         case 7:
             //exit
