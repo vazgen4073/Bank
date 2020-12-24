@@ -244,23 +244,27 @@ void Bank::transactions()
 
     if (wantto == 1) {
         int money = j[passnum]["Deposit"];
-
         int amount;
+        bool Isnumber;
 
         if (money > 0) {
             std::system("clear");
             std::cout << "Enter the amount\n";
 
-            std::string str_amount;
-            bool Isnumber;
             do {
                 Isnumber = true;
-                std::cin >> str_amount;
+
                 try {
-                    amount = stoi(str_amount);
-                } catch (...) {
+                    std::cin >> amount;
+                    if (std::cin.fail()) {
+                        throw std::invalid_argument(""
+                                                    "Please input numbers only \n");
+                    }
+                } catch (std::exception& ex) {
+                    std::cin.clear();
+                    std::cin.ignore();
                     std::system("clear");
-                    std::cout << "Please input numbers only \n";
+                    std::cout << ex.what();
                     Isnumber = false;
                 }
             } while (!Isnumber);
@@ -289,20 +293,26 @@ void Bank::transactions()
         int money = j[passnum]["Deposit"];
 
         int amount;
+        bool Isnumber;
 
         std::system("clear");
         std::cout << "Enter the amount\n";
-        std::string str_amount;
-        bool Isnumber;
+
         do {
 
             Isnumber = true;
-            std::cin >> str_amount;
+
             try {
-                amount = stoi(str_amount);
-            } catch (...) {
+                std::cin >> amount;
+                if (std::cin.fail())
+                    throw std::invalid_argument(""
+                                                "Please input numbers only \n");
+
+            } catch (std::exception& ex) {
+                std::cin.clear();
+                std::cin.ignore();
                 std::system("clear");
-                std::cout << "Please input numbers only \n";
+                std::cout << ex.what() << "\n";
                 Isnumber = false;
             }
         } while (!Isnumber);
