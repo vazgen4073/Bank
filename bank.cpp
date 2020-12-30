@@ -1,4 +1,5 @@
 #include "bank.h"
+#include <exception>
 #include <iomanip>
 #include <iostream>
 
@@ -33,18 +34,24 @@ void Bank::create_account()
     }
     std::string password, cnfpassword;
 
+    std::system("clear");
     std::cout << "Please enter your name \n";
     std::cin >> ps.name;
+    std::system("clear");
     std::cout << "Please enter your last name \n";
     std::cin >> ps.last_name;
+    std::system("clear");
     std::cout << "Please enter your middle name \n";
     std::cin >> ps.middle_name;
+    std::system("clear");
     std::cout << "Please enter your passport number \n";
     std::cin >> ps.passport_number;
     std::cin.ignore();
+    std::system("clear");
     std::cout << "Please enter your date of birth \n";
     getline(std::cin, ps.date_of_birth);
 
+    std::system("clear");
     bool passisok = true;
     do {
         if (!passisok) {
@@ -72,8 +79,6 @@ void Bank::create_account()
         { "Transactions", { 0 } }
     };
 
-    //std::string js = j.dump(4);
-    // std::cout << js << " ";
     fin.close();
     std::ofstream out;
     out.open(path);
@@ -85,6 +90,7 @@ void Bank::create_account()
 
     out.close();
 
+    std::system("clear");
     std::cout << "Your account created successesfully !\n";
 }
 
@@ -104,10 +110,19 @@ void Bank::update_inf_exs_account()
     finout.close();
     std::string passnum, password;
 
+    int passctr = 3;
     bool passisok = true;
+
     do {
+        std::system("clear");
         if (!passisok) {
-            std::cout << "Password or Passport number do not match \n";
+
+            if (passctr == 0)
+                throw std::invalid_argument("You Consumed your possibilites ");
+
+            std::cout << "Password or Passport number do not match \n"
+                      << "You have " << passctr << " times to try\n";
+            passctr--;
         }
         passisok = false;
         std::cout << "Please enter your passport number\n";
@@ -121,8 +136,8 @@ void Bank::update_inf_exs_account()
         if (i.key() == passnum) {
 
             int pcounter = 0;
-            for (json::iterator k = i->begin(); k != i->end(); k++) { //print details
-                if (k.key() == "Password" || k.key() == "Transactions" //do not show this paragraphs
+            for (json::iterator k = i->begin(); k != i->end(); k++) {
+                if (k.key() == "Password" || k.key() == "Transactions"
                     || k.key() == "Deposit")
                     continue;
                 std::cout << pcounter + 1 << " " << k.key() << " " << k.value() << "\n";
@@ -145,7 +160,7 @@ void Bank::update_inf_exs_account()
 
             for (json::iterator k = i->begin(); k != i->end(); k++) {
 
-                if (k.key() == "Password" || k.key() == "Transactions" //do not stay on lines
+                if (k.key() == "Password" || k.key() == "Transactions"
                     || k.key() == "Deposit")
                     continue;
                 if (paragraph == pcounter) {
@@ -158,10 +173,11 @@ void Bank::update_inf_exs_account()
                 pcounter++;
             }
 
+            std::system("clear");
             std::cout << "Your account updated successesfully !!\n\n\n";
 
-            for (json::iterator k = i->begin(); k != i->end(); k++) { //print details
-                if (k.key() == "Password" || k.key() == "Transactions" //do not show this paragraphs
+            for (json::iterator k = i->begin(); k != i->end(); k++) {
+                if (k.key() == "Password" || k.key() == "Transactions"
                     || k.key() == "Deposit")
                     continue;
                 std::cout << k.key() << " " << k.value() << "\n";
@@ -196,12 +212,22 @@ void Bank::transactions()
     fin >> j;
     std::string passnum, password;
 
+    int passctr = 3;
     bool passisok = true;
+
     do {
+        std::system("clear");
         if (!passisok) {
-            std::cout << "Password or Passport number do not match \n";
+
+            if (passctr == 0)
+                throw std::invalid_argument("You Consumed your possibilites ");
+
+            std::cout << "Password or Passport number do not match \n"
+                      << "You have " << passctr << " times to try\n";
+            passctr--;
         }
         passisok = false;
+
         std::cout << "Please enter your passport number\n";
         std::cin >> passnum;
         std::cout << "Enter your password\n";
@@ -209,21 +235,40 @@ void Bank::transactions()
 
     } while (j[passnum]["Password"] != password);
 
-    // std::cout << std::setw(4) << j << std::endl;
-
     int wantto;
+    std::system("clear");
     std::cout << "1 If you want to withdraw money \n"
               << "2 If you want to add money \n";
 
     std::cin >> wantto;
+
     if (wantto == 1) {
         int money = j[passnum]["Deposit"];
-
         int amount;
+        bool Isnumber;
 
         if (money > 0) {
+            std::system("clear");
             std::cout << "Enter the amount\n";
-            std::cin >> amount;
+
+            do {
+                Isnumber = true;
+
+                try {
+                    std::cin >> amount;
+                    if (std::cin.fail()) {
+                        throw std::invalid_argument(""
+                                                    "Please input numbers only \n");
+                    }
+                } catch (std::exception& ex) {
+                    std::cin.clear();
+                    std::cin.ignore();
+                    std::system("clear");
+                    std::cout << ex.what();
+                    Isnumber = false;
+                }
+            } while (!Isnumber);
+
             money = money - amount;
             j[passnum]["Deposit"] = money;
             j[passnum]["Transactions"].push_back(-amount);
@@ -240,6 +285,7 @@ void Bank::transactions()
 
             out.close();
         } else {
+            std::system("clear");
             std::cout << "There is not enogh money on your account\n";
         }
     }
@@ -247,9 +293,30 @@ void Bank::transactions()
         int money = j[passnum]["Deposit"];
 
         int amount;
+        bool Isnumber;
 
+        std::system("clear");
         std::cout << "Enter the amount\n";
-        std::cin >> amount;
+
+        do {
+
+            Isnumber = true;
+
+            try {
+                std::cin >> amount;
+                if (std::cin.fail())
+                    throw std::invalid_argument(""
+                                                "Please input numbers only \n");
+
+            } catch (std::exception& ex) {
+                std::cin.clear();
+                std::cin.ignore();
+                std::system("clear");
+                std::cout << ex.what() << "\n";
+                Isnumber = false;
+            }
+        } while (!Isnumber);
+
         money = money + amount;
         j[passnum]["Deposit"] = money;
         j[passnum]["Transactions"].push_back(amount);
@@ -285,11 +352,21 @@ void ::Bank::check_det_acount()
 
     std::string passnum, password;
 
+    int passctr = 3;
     bool passisok = true;
+
     do {
+        std::system("clear");
         if (!passisok) {
-            std::cout << "Password or Passport number do not match \n";
+
+            if (passctr == 0)
+                throw std::invalid_argument("You Consumed your possibilites ");
+
+            std::cout << "Password or Passport number do not match \n"
+                      << "You have " << passctr << " times to try\n";
+            passctr--;
         }
+
         passisok = false;
         std::cout << "Please enter your passport number\n";
         std::cin >> passnum;
@@ -327,10 +404,19 @@ void Bank::rm_exs_account()
     fin.close();
     std::string passnum, password;
 
+    int passctr = 3;
     bool passisok = true;
+
     do {
+        std::system("clear");
         if (!passisok) {
-            std::cout << "Password or Passport number do not match \n";
+
+            if (passctr == 0)
+                throw std::invalid_argument("You Consumed your possibilites ");
+
+            std::cout << "Password or Passport number do not match \n"
+                      << "You have " << passctr << " times to try\n";
+            passctr--;
         }
         passisok = false;
         std::cout << "Please enter your passport number\n";
@@ -366,10 +452,18 @@ void Bank::view_cust_list()
     fin.close();
     std::string password, password2 = "0000";
 
+    int passctr = 3;
     bool passisok = true;
     do {
+        std::system("clear");
         if (!passisok) {
-            std::cout << "Password Is incorrect \n";
+
+            if (passctr == 0)
+                throw std::invalid_argument("You Consumed your possibilites ");
+
+            std::cout << "Wrong password \n"
+                      << "You have " << passctr << " times to try\n";
+            passctr--;
         }
         passisok = false;
         std::cout << "Enter password\n";

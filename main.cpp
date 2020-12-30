@@ -25,39 +25,37 @@ int main()
     while (!exit) {
         print_Welcome();
         std::cin >> num;
-        switch (num) {
+        std::system("clear");
+        try {
+            switch (num) {
 
-        case 1:
-            //create  account
-            bobj.create_account();
-            break;
-        case 2:
-            //update information of  existing account
-            bobj.update_inf_exs_account();
-            break;
-        case 3:
-            //for transactions
-            bobj.transactions();
-            break;
-        case 4:
+            case 1:
+                bobj.create_account();
+                break;
+            case 2:
+                bobj.update_inf_exs_account();
+                break;
+            case 3:
+                bobj.transactions();
+                break;
+            case 4:
+                bobj.check_det_acount();
+                break;
+            case 5:
+                bobj.rm_exs_account();
+                break;
+            case 6:
+                bobj.view_cust_list();
+                break;
+            case 7:
+                exit = true;
+                break;
 
-            //check the  details  of existing  account
-            bobj.check_det_acount();
-            break;
-        case 5:
-            bobj.rm_exs_account();
-            //removing  existing  account
-            break;
-        case 6:
-            //view customers  list
-            bobj.view_cust_list();
-            break;
-        case 7:
-            //exit
-            exit = true;
-            break;
-        default:
-            std::cout << "Please select correct paragraph\n";
+            default:
+                std::cout << "Please select correct paragraph\n";
+            }
+        } catch (std::exception& ex) {
+            std::cout << ex.what() << "\n";
         }
     }
 
