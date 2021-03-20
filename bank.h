@@ -10,7 +10,7 @@ using json = nlohmann::json;
 class Bank {
 
 public:
-    Bank();
+    Bank() { }
     void create_account();
     void update_inf_exs_account();
     void transactions();
@@ -28,4 +28,4 @@ private:
     };
 };
 
-#endif // BANK_H
+#endif

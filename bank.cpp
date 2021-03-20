@@ -3,10 +3,6 @@
 #include <iomanip>
 #include <iostream>
 
-Bank::Bank()
-{
-}
-
 void Bank::create_account()
 {
     json j;
@@ -257,8 +253,7 @@ void Bank::transactions()
                 try {
                     std::cin >> amount;
                     if (std::cin.fail()) {
-                        throw std::invalid_argument(""
-                                                    "Please input numbers only \n");
+                        throw std::invalid_argument("Please input numbers only \n");
                     }
                 } catch (std::exception& ex) {
                     std::cin.clear();
@@ -305,8 +300,7 @@ void Bank::transactions()
             try {
                 std::cin >> amount;
                 if (std::cin.fail())
-                    throw std::invalid_argument(""
-                                                "Please input numbers only \n");
+                    throw std::invalid_argument("Please input numbers only \n");
 
             } catch (std::exception& ex) {
                 std::cin.clear();
@@ -478,3 +472,4 @@ void Bank::view_cust_list()
         std::cout << "\n";
     }
 }
+
